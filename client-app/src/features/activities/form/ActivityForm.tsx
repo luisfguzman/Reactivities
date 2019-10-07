@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Segment, Form, Button, Grid } from 'semantic-ui-react';
 import { ActivityFormValues } from '../../../app/models/activity';
 import { v4 as uuid } from 'uuid';
-import ActivityStore from '../../../app/stores/activityStore';
 import { observer } from 'mobx-react-lite';
 import { RouteComponentProps } from 'react-router';
 import { Form as FinalForm, Field } from 'react-final-form';
@@ -12,6 +11,7 @@ import SelectInput from '../../../app/common/form/SelectInput';
 import DateInput from '../../../app/common/form/DateInput';
 import { category } from '../../../app/common/options/categoryOptions';
 import { combineDateAndTime } from '../../../app/common/util/util';
+import { RootStoreContext } from "../../../app/stores/rootStore";
 import {
   combineValidators,
   isRequired,
@@ -42,13 +42,13 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
   match,
   history
 }) => {
-  const activityStore = useContext(ActivityStore);
+  const rootStore = useContext(RootStoreContext);
   const {
     createActivity,
     editActivity,
     submitting,
     loadActivity
-  } = activityStore;
+  } = rootStore.activityStore;
 
   const [activity, setActivity] = useState(new ActivityFormValues());
   const [loading, setLoading] = useState(false);
