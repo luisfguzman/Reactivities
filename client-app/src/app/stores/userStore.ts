@@ -10,6 +10,7 @@ export default class UserStore {
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
   }
+  
   @observable user: IUser | null = null;
 
   @computed get isLoggedIn() {
