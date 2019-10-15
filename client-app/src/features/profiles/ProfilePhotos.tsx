@@ -6,8 +6,24 @@ import PhotoUploadWidget from "../../app/common/photoUpload/PhotoUploadWidget";
 
 const ProfilePhotos = () => {
   const rootStore = useContext(RootStoreContext);
-  const { profile, isCurrentUser } = rootStore.profileStore;
+  const {
+    profile,
+    isCurrentUser,
+    uploadPhoto,
+    uploadingPhoto,
+    setMainPhoto,
+    loading,
+    deletePhoto
+  } = rootStore.profileStore;
   const [addPhotoMode, setAddPhotoMode] = useState(true);
+  const [target, setTarget] = useState<string | undefined>(undefined);
+  const [deleteTarget, setDeleteTarget] = useState<string | undefined>(
+    undefined
+  );
+
+  const handleUploadImage = (photo: Blob) => {
+    uploadPhoto(photo).then(() => setAddPhotoMode(false));
+  };
 
   return (
     <Tab.Pane>
@@ -25,7 +41,10 @@ const ProfilePhotos = () => {
         </Grid.Column>
         <Grid.Column width={16}>
           {addPhotoMode ? (
-            <PhotoUploadWidget />
+            <PhotoUploadWidget
+              uploadPhoto={handleUploadImage}
+              loading={uploadingPhoto}
+            />
           ) : (
             <Card.Group item={5}>
               {profile &&
@@ -34,8 +53,30 @@ const ProfilePhotos = () => {
                     <Image source={photo.url} />
                     {isCurrentUser && (
                       <Button.Group fluid widths={2}>
-                        <Button basic positive content="Main" />
-                        <Button basic negative icon="trash" />
+                        <Button
+                          onClick={e => {
+                            setMainPhoto(photo);
+                            setTarget(e.currentTarget.name);
+                          }}
+                          name={photo.id}
+                          disabled={photo.isMain}
+                          loading={loading && target === photo.id}
+                          basic
+                          positive
+                          content="Main"
+                        />
+                        <Button
+                          name={photo.id}
+                          disabled={photo.isMain}
+                          onClick={e => {
+                            deletePhoto(photo);
+                            setDeleteTarget(e.currentTarget.name);
+                          }}
+                          loading={loading && deleteTarget === photo.id}
+                          basic
+                          negative
+                          icon="trash"
+                        />
                       </Button.Group>
                     )}
                   </Card>
