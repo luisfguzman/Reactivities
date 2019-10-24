@@ -50,7 +50,7 @@ const ProfilePhotos = () => {
               {profile &&
                 profile.photos.map(photo => (
                   <Card key={photo.id}>
-                    <Image source={photo.url} />
+                    <Image src={photo.url} />
                     {isCurrentUser && (
                       <Button.Group fluid widths={2}>
                         <Button
