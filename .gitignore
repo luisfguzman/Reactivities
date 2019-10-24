@@ -4,3 +4,7 @@ obj
 .DS_store
 appsettings.json
 *.db
+wwwroot
+publish
+settings.json
+appsettings.json
