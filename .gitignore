@@ -8,3 +8,4 @@ wwwroot
 publish
 settings.json
 appsettings.json
+appsettings.Development.json
