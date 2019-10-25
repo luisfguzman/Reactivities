@@ -1,10 +1,14 @@
-import React from "react";
-import { Segment, Grid, Icon } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Segment, Grid, Icon, Button } from "semantic-ui-react";
 import { IActivity } from "../../../app/models/activity";
 import { observer } from "mobx-react-lite";
 import { format } from "date-fns";
+import ActivityDetailedMap from "./ActivityDetailedMap";
 
-const ActivityDetailedInfo: React.FC<{activity: IActivity}> = ({activity}) => {
+const ActivityDetailedInfo: React.FC<{ activity: IActivity }> = ({
+  activity
+}) => {
+  const [showMap, setShowMap] = useState(false);
   return (
     <Segment.Group>
       <Segment attached="top">
@@ -23,7 +27,10 @@ const ActivityDetailedInfo: React.FC<{activity: IActivity}> = ({activity}) => {
             <Icon name="calendar" size="large" color="teal" />
           </Grid.Column>
           <Grid.Column width={15}>
-            <span>{format(activity.date, 'eeee do MMMM')} at {format(activity.date, 'h:mm a')}</span>
+            <span>
+              {format(activity.date, "eeee do MMMM")} at{" "}
+              {format(activity.date, "h:mm a")}
+            </span>
           </Grid.Column>
         </Grid>
       </Segment>
@@ -37,8 +44,17 @@ const ActivityDetailedInfo: React.FC<{activity: IActivity}> = ({activity}) => {
               {activity.venue}, {activity.city}
             </span>
           </Grid.Column>
+          <Grid.Column width={4}>
+            <Button
+              onClick={() => setShowMap(!showMap)}
+              color="teal"
+              size="tiny"
+              content={showMap ? "Hide Map" : "Show Map"}
+            />
+          </Grid.Column>
         </Grid>
       </Segment>
+      {showMap && <ActivityDetailedMap lat={45.4910} lng={-73.5683} />}
     </Segment.Group>
   );
 };
