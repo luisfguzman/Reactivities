@@ -51,7 +51,7 @@ const RegisterForm = () => {
         <Form onSubmit={handleSubmit} error>
           <Header
             as="h2"
-            content="Sign up to Reactivities"
+            content="Sign up to Intermingle.Club"
             color="teal"
             textAlign="center"
           />

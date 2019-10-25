@@ -17,7 +17,7 @@ const NavBar: React.FC = () => {
               alt="logo"
               style={{ marginRight: 10 }}
             />
-            Reactivities
+            Intermingle.Club
           </Menu.Item>
           <Menu.Item name="Activities" as={NavLink} to="/activities" />
           <Menu.Item>

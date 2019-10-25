@@ -49,7 +49,7 @@ const LoginForm = () => {
         <Form onSubmit={handleSubmit} error>
           <Header
             as="h2"
-            content="Login to Reactivities"
+            content="Login to Intermingle.Club"
             color="teal"
             textAlign="center"
           />
