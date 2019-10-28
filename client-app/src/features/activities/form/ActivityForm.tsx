@@ -89,8 +89,8 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     const dateAndTime = combineDateAndTime(values.date, values.time);
     const { date, time, ...activity } = values;
     activity.date = dateAndTime;
-    activity.lat = venueLatLng.lat != 0 ? venueLatLng.lat : activity.lat;
-    activity.lng = venueLatLng.lng != 0 ? venueLatLng.lng : activity.lng;
+    activity.lat = venueLatLng.lat !== 0 ? venueLatLng.lat : activity.lat;
+    activity.lng = venueLatLng.lng !== 0 ? venueLatLng.lng : activity.lng;
     if (!activity.id) {
       let newActivity = {
         ...activity,
