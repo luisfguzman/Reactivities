@@ -20,6 +20,8 @@ namespace Application.Activities
             public DateTime? Date { get; set; }
             public string City { get; set; }
             public string Venue { get; set; }
+            public double Lat { get; set; }
+            public double Lng { get; set; }
         }
 
         public class CommandValidator : AbstractValidator<Command>
@@ -32,6 +34,8 @@ namespace Application.Activities
                 RuleFor(x => x.Date).NotEmpty();
                 RuleFor(x => x.City).NotEmpty();
                 RuleFor(x => x.Venue).NotEmpty();
+                RuleFor(x => x.Lat).NotEmpty();
+                RuleFor(x => x.Lng).NotEmpty();
             }
         }
 
@@ -57,6 +61,8 @@ namespace Application.Activities
                 activity.Date = request.Date ?? activity.Date;
                 activity.City = request.City ?? activity.City;
                 activity.Venue = request.Venue ?? activity.Venue;
+                activity.Lat = request.Lat;
+                activity.Lng = request.Lng;
 
                 var success = await _context.SaveChangesAsync() > 0;
 

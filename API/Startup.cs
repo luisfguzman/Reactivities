@@ -161,7 +161,7 @@ namespace API
                     .FormActions(s => s.Self())
                     .FrameAncestors(s => s.Self())
                     .ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com", "blob:", "data:"))
-                    .ScriptSources(s => s.Self().CustomSources("sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU="))
+                    .ScriptSources(s => s.Self().CustomSources("https://maps.googleapis.com", "sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU="))
                 );
 
             // app.UseHttpsRedirection();

@@ -7,7 +7,7 @@ interface IProps {
   lng: number;
 }
 
-const Marker = () => <Icon name="marker" size="big" color="red" />;
+const Marker = (props: any) => <Icon name="map pin" size="big" color="red" />;
 
 const ActivityDetailedMap: React.FC<IProps> = ({ lat, lng }) => {
   const center: Coords = { lat, lng };
@@ -20,6 +20,7 @@ const ActivityDetailedMap: React.FC<IProps> = ({ lat, lng }) => {
           defaultCenter={center}
           defaultZoom={zoom}
         >
+          <Marker lat={lat} lng={lng} />
         </GoogleMapReact>
       </div>
     </Segment>

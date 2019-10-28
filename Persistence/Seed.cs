@@ -57,6 +57,8 @@ namespace Persistence
                         Category = "Drinks",
                         City = "London",
                         Venue = "Pub",
+                        Lat = 45.4960667,
+                        Lng = -73.5693153,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -75,6 +77,8 @@ namespace Persistence
                         Category = "Culture",
                         City = "Paris",
                         Venue = "The Louvre",
+                        Lat = 45.4960667,
+                        Lng = -73.5693153,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -99,6 +103,8 @@ namespace Persistence
                         Category = "Music",
                         City = "London",
                         Venue = "Wembly Stadium",
+                        Lat = 45.4960667,
+                        Lng = -73.5693153,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -123,6 +129,8 @@ namespace Persistence
                         Category = "Food",
                         City = "London",
                         Venue = "Jamies Italian",
+                        Lat = 45.4960667,
+                        Lng = -73.5693153,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -147,6 +155,8 @@ namespace Persistence
                         Category = "Drinks",
                         City = "London",
                         Venue = "Pub",
+                        Lat = 45.4960667,
+                        Lng = -73.5693153,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -171,6 +181,8 @@ namespace Persistence
                         Category = "Culture",
                         City = "London",
                         Venue = "British Museum",
+                        Lat = 45.4960667,
+                        Lng = -73.5693153,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -189,6 +201,8 @@ namespace Persistence
                         Category = "Drinks",
                         City = "London",
                         Venue = "Punch and Judy",
+                        Lat = 45.4960667,
+                        Lng = -73.5693153,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -213,6 +227,8 @@ namespace Persistence
                         Category = "Music",
                         City = "London",
                         Venue = "O2 Arena",
+                        Lat = 45.4960667,
+                        Lng = -73.5693153,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -237,6 +253,8 @@ namespace Persistence
                         Category = "Travel",
                         City = "Berlin",
                         Venue = "All",
+                        Lat = 45.4960667,
+                        Lng = -73.5693153,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -261,6 +279,8 @@ namespace Persistence
                         Category = "Drinks",
                         City = "London",
                         Venue = "Pub",
+                        Lat = 45.4960667,
+                        Lng = -73.5693153,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity

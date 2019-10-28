@@ -54,7 +54,7 @@ const ActivityDetailedInfo: React.FC<{ activity: IActivity }> = ({
           </Grid.Column>
         </Grid>
       </Segment>
-      {showMap && <ActivityDetailedMap lat={45.4910} lng={-73.5683} />}
+      {showMap && <ActivityDetailedMap lat={activity.lat} lng={activity.lng} />}
     </Segment.Group>
   );
 };
