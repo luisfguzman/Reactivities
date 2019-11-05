@@ -37,6 +37,18 @@ const ActivityDetailedInfo: React.FC<{ activity: IActivity }> = ({
       <Segment attached>
         <Grid verticalAlign="middle">
           <Grid.Column width={1}>
+            <Icon name="dollar" size="large" color="teal" />
+          </Grid.Column>
+          <Grid.Column width={15}>
+            <span>
+              {activity.price > 0 ? activity.price.toFixed(2) : "Free"}
+            </span>
+          </Grid.Column>
+        </Grid>
+      </Segment>
+      <Segment attached>
+        <Grid verticalAlign="middle">
+          <Grid.Column width={1}>
             <Icon name="marker" size="large" color="teal" />
           </Grid.Column>
           <Grid.Column width={11}>

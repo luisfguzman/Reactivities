@@ -18,9 +18,11 @@ import {
   combineValidators,
   isRequired,
   composeValidators,
-  hasLengthGreaterThan
+  hasLengthGreaterThan,
+  isNumeric
 } from "revalidate";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+import PriceInput from "../../../app/common/form/PriceInput";
 
 const validate = combineValidators({
   title: isRequired({ message: "The event title is required" }),
@@ -34,7 +36,8 @@ const validate = combineValidators({
   city: isRequired("City"),
   venue: isRequired("Venue"),
   date: isRequired("Date"),
-  time: isRequired("Time")
+  time: isRequired("Time"),
+  price: composeValidators(isRequired("Price"),isNumeric("Price"))()
 });
 
 interface DetailParams {
@@ -91,6 +94,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     activity.date = dateAndTime;
     activity.lat = venueLatLng.lat !== 0 ? venueLatLng.lat : activity.lat;
     activity.lng = venueLatLng.lng !== 0 ? venueLatLng.lng : activity.lng;
+    activity.price = Number(activity.price);
     if (!activity.id) {
       let newActivity = {
         ...activity,
@@ -107,7 +111,6 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
       <Grid.Column width={10}>
         <Segment clearing>
           <FinalForm
-            
             validate={validate}
             initialValues={activity}
             onSubmit={handleFinalFormSubmit}
@@ -126,13 +129,21 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
                   value={activity.description}
                   component={TextAreaInput}
                 />
-                <Field
-                  component={SelectInput}
-                  options={category}
-                  name="category"
-                  placeholder="Category"
-                  value={activity.category}
-                />
+                <Form.Group widths="equal">
+                  <Field
+                    component={SelectInput}
+                    options={category}
+                    name="category"
+                    placeholder="Category"
+                    value={activity.category}
+                  />
+                  <Field
+                    name="price"
+                    placeholder="Price"
+                    value={activity.price ? activity.price.toFixed(2): undefined}
+                    component={PriceInput}
+                  />
+                </Form.Group>
                 <Form.Group widths="equal">
                   <Field
                     component={DateInput}

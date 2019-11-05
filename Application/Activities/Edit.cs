@@ -22,6 +22,7 @@ namespace Application.Activities
             public string Venue { get; set; }
             public double Lat { get; set; }
             public double Lng { get; set; }
+            public double Price { get; set; }
         }
 
         public class CommandValidator : AbstractValidator<Command>
@@ -36,6 +37,7 @@ namespace Application.Activities
                 RuleFor(x => x.Venue).NotEmpty();
                 RuleFor(x => x.Lat).NotEmpty();
                 RuleFor(x => x.Lng).NotEmpty();
+                RuleFor(x => x.Price).NotEmpty().GreaterThanOrEqualTo(0);
             }
         }
 
@@ -63,6 +65,7 @@ namespace Application.Activities
                 activity.Venue = request.Venue ?? activity.Venue;
                 activity.Lat = request.Lat;
                 activity.Lng = request.Lng;
+                activity.Price = request.Price;
 
                 var success = await _context.SaveChangesAsync() > 0;
 

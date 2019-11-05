@@ -59,6 +59,7 @@ namespace Persistence
                         Venue = "Pub",
                         Lat = 45.4960667,
                         Lng = -73.5693153,
+                        Price = 100.00,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -79,6 +80,7 @@ namespace Persistence
                         Venue = "The Louvre",
                         Lat = 45.4960667,
                         Lng = -73.5693153,
+                        Price = 100.00,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -105,6 +107,7 @@ namespace Persistence
                         Venue = "Wembly Stadium",
                         Lat = 45.4960667,
                         Lng = -73.5693153,
+                        Price = 100.00,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -131,6 +134,7 @@ namespace Persistence
                         Venue = "Jamies Italian",
                         Lat = 45.4960667,
                         Lng = -73.5693153,
+                        Price = 100.00,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -157,6 +161,7 @@ namespace Persistence
                         Venue = "Pub",
                         Lat = 45.4960667,
                         Lng = -73.5693153,
+                        Price = 100.00,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -183,6 +188,7 @@ namespace Persistence
                         Venue = "British Museum",
                         Lat = 45.4960667,
                         Lng = -73.5693153,
+                        Price = 100.00,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -203,6 +209,7 @@ namespace Persistence
                         Venue = "Punch and Judy",
                         Lat = 45.4960667,
                         Lng = -73.5693153,
+                        Price = 100.00,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -229,6 +236,7 @@ namespace Persistence
                         Venue = "O2 Arena",
                         Lat = 45.4960667,
                         Lng = -73.5693153,
+                        Price = 100.00,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -255,6 +263,7 @@ namespace Persistence
                         Venue = "All",
                         Lat = 45.4960667,
                         Lng = -73.5693153,
+                        Price = 00.00,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity
@@ -281,6 +290,7 @@ namespace Persistence
                         Venue = "Pub",
                         Lat = 45.4960667,
                         Lng = -73.5693153,
+                        Price = 00.00,
                         UserActivities = new List<UserActivity>
                         {
                             new UserActivity

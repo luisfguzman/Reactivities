@@ -14,6 +14,7 @@ namespace Domain
         public string Venue { get; set; }
         public double Lat { get; set; }
         public double Lng { get; set; }
+        public double Price { get; set; }
         public virtual ICollection<UserActivity> UserActivities { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
     }

@@ -13,6 +13,7 @@ export interface IActivity {
   venue: string;
   lat: number;
   lng: number;
+  price: number;
   isGoing: boolean;
   isHost: boolean;
   attendees: IAttendee[];
@@ -41,6 +42,7 @@ export class ActivityFormValues implements IActivityFormValues {
   time?: Date = undefined;
   city: string = "";
   venue: string = "";
+  price: number = 0;
 
   constructor(init?: IActivityFormValues) {
     if (init && init.date) {

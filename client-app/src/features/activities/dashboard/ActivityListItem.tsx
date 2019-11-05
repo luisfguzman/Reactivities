@@ -46,8 +46,9 @@ const ActivityListItem: React.FC<{ activity: IActivity }> = ({ activity }) => {
         </Item.Group>
       </Segment>
       <Segment>
-        <Icon name="clock" /> {format(activity.date, "h:mm a")} |
-        <Icon name="marker" /> {activity.venue}, {activity.city}
+        <Icon name="clock" />{format(activity.date, "h:mm a")} |
+        <Icon name="marker" />{activity.venue}, {activity.city} |
+        <Icon name="dollar" />{activity.price > 0 ? activity.price.toFixed(2) : "Free"}
       </Segment>
       <Segment secondary>
         <ActivityListItemAttendees attendees={activity.attendees} />

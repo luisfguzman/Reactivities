@@ -16,7 +16,7 @@ namespace Application.Activities
         public string Venue { get; set; }
         public double Lat { get; set; }
         public double Lng { get; set; }
-        
+        public double Price { get; set; }
         [JsonProperty("attendees")]
         public ICollection<AttendeeDto> UserActivities { get; set; }
         public ICollection<CommentDto> Comments { get; set; }

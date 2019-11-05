@@ -24,7 +24,7 @@ namespace Application.User
         {
             public QueryValidator()
             {
-                RuleFor(x => x.Email).NotEmpty();
+                RuleFor(x => x.Email).NotEmpty().EmailAddress();
                 RuleFor(x => x.Password).NotEmpty();
             }
         }
