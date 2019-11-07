@@ -156,11 +156,14 @@ namespace API
             app.UseCsp(opt => opt
                     .BlockAllMixedContent()
                     .StyleSources(s => s.Self()
-                        .CustomSources("https://fonts.googleapis.com", "sha256-F4GpCPyRepgP5znjMD8sc7PEjzet5Eef4r09dEGPpTs="))
+                        .CustomSources("https://fonts.googleapis.com", "sha256-F4GpCPyRepgP5znjMD8sc7PEjzet5Eef4r09dEGPpTs=",
+                        "sha256-a2VR/Wq1VPr0+3GRY+lEmAQm7wjwwnDtPpcCPs2zTrw=", "sha256-mmA4m52ZWPKWAzDvKQbF7Qhx9VHCZ2pcEdC0f9Xn/Po=",
+                        "sha256-/VVOq+Ws/EiUxf2CU6tsqsHdOWqBgHSgwBPqCTjYD3U=", "sha256-2WQZQFa8KGAig8CPptpS8JDqetQ2jb5arMlI6fTGWiU=",
+                        "sha256-g9aHNH7iF2hhGZYtVVd5mKQSnyLPmXWw5gwiuxBVonI=", "sha256-VjKqXV9i0mo5RzxvaQpz7qQA91PkjLVqLQGYNI4Cc/I="))
                     .FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com", "data:"))
                     .FormActions(s => s.Self())
                     .FrameAncestors(s => s.Self())
-                    .ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com", "blob:", "data:"))
+                    .ImageSources(s => s.Self().CustomSources("https://maps.gstatic.com", "https://maps.googleapis.com", "https://res.cloudinary.com", "blob:", "data:"))
                     .ScriptSources(s => s.Self().CustomSources("https://maps.googleapis.com", "sha256-5As4+3YpY62+l38PsxCEkjB1R4YtyktBtRScTJ3fyLU="))
                 );
 

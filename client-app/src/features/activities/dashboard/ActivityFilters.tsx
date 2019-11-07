@@ -16,14 +16,14 @@ const ActivityFilters = () => {
           onClick={() => setPredicate("all", "true")}
           color={"blue"}
           name={"all"}
-          content={"All Activities"}
+          content={"All activities"}
         />
         <Menu.Item
           active={predicate.has("isGoing")}
           onClick={() => setPredicate("isGoing", "true")}
           color={"blue"}
           name={"username"}
-          content={"I'm Going"}
+          content={"I'm going"}
         />
         <Menu.Item
           active={predicate.has("isHost")}
@@ -37,7 +37,7 @@ const ActivityFilters = () => {
         icon={"calendar"}
         attached
         color={"teal"}
-        content={"Select Date"}
+        content={"Select date"}
       />
       <Calendar
         onChange={date => setPredicate("startDate", date!)}
