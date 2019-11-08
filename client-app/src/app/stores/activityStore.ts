@@ -1,4 +1,11 @@
-import { observable, action, computed, runInAction, reaction, toJS } from "mobx";
+import {
+  observable,
+  action,
+  computed,
+  runInAction,
+  reaction,
+  toJS
+} from "mobx";
 import { SyntheticEvent } from "react";
 import { IActivity } from "../models/activity";
 import agent from "../api/agent";
@@ -23,7 +30,7 @@ export default class ActivityStore {
         this.activityRegistry.clear();
         this.loadActivities();
       }
-    )
+    );
   }
 
   @observable activityRegistry = new Map();
@@ -41,6 +48,10 @@ export default class ActivityStore {
     return Math.ceil(this.activityCount / LIMIT);
   }
 
+  @computed get totalLikes() {
+    return this.activity!.likes.length;
+  }
+
   @computed get activitiesByDate() {
     return this.groupActivitiesByDate(
       Array.from(this.activityRegistry.values())
@@ -49,24 +60,24 @@ export default class ActivityStore {
 
   @computed get axiosParams() {
     const params = new URLSearchParams();
-    params.append('limit', String(LIMIT));
-    params.append('offset', `${this.page ? this.page * LIMIT : 0}`);
+    params.append("limit", String(LIMIT));
+    params.append("offset", `${this.page ? this.page * LIMIT : 0}`);
     this.predicate.forEach((value, key) => {
-      if (key === 'startDate') {
-        params.append(key, value.toISOString())
+      if (key === "startDate") {
+        params.append(key, value.toISOString());
       } else {
-        params.append(key, value)
+        params.append(key, value);
       }
-    })
+    });
     return params;
   }
 
   @action setPredicate = (predicate: string, value: string | Date) => {
     this.predicate.clear();
-    if (predicate !== 'all') {
+    if (predicate !== "all") {
       this.predicate.set(predicate, value);
     }
-  }
+  };
 
   @action setPage = (page: number) => {
     this.page = page;
@@ -90,6 +101,16 @@ export default class ActivityStore {
         this.activity!.comments.push(comment);
       });
     });
+    this.hubConnection.on("ReceiveLike", like => {
+      runInAction(() => {
+        if (like.status === "Liked") this.activity!.likes.push(like);
+        else {
+          this.activity!.likes = this.activity!.likes.filter(
+            a => a.id !== like.id
+          );
+        }
+      });
+    });
   };
 
   @action stopHubConnection = () => {
@@ -100,6 +121,15 @@ export default class ActivityStore {
     values.activityId = this.activity!.id;
     try {
       await this.hubConnection!.invoke("SendComment", values);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  @action sendLike = async (values: any) => {
+    values.activityId = this.activity!.id;
+    try {
+      await this.hubConnection!.invoke("SendLike", values);
     } catch (error) {
       console.log(error);
     }
@@ -157,6 +187,7 @@ export default class ActivityStore {
       attendees.push(attendee);
       activity.attendees = attendees;
       activity.comments = [];
+      activity.likes =[];
       activity.isHost = true;
       runInAction("create activity", () => {
         this.activityRegistry.set(activity.id, activity);

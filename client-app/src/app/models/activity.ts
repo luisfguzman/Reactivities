@@ -18,12 +18,21 @@ export interface IActivity {
   isHost: boolean;
   attendees: IAttendee[];
   comments: IComment[];
+  likes: ILike[];
 }
 
 export interface IComment {
   id: string;
   createdAt: Date;
   body: string;
+  userName: string;
+  displayName: string;
+  image: string;
+}
+
+export interface ILike {
+  id: string;
+  status: string;
   userName: string;
   displayName: string;
   image: string;
