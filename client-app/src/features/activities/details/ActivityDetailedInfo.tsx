@@ -1,28 +1,20 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Segment, Grid, Icon, Button } from "semantic-ui-react";
-import { IActivity } from "../../../app/models/activity";
+import React, { useState, useContext } from "react";
+import { Segment, Grid, Icon, Button, Form } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 import { format } from "date-fns";
 import ActivityDetailedMap from "./ActivityDetailedMap";
+import { Form as FinalForm } from "react-final-form";
 import { RootStoreContext } from "../../../app/stores/rootStore";
 
 const ActivityDetailedInfo = () => {
   const [showMap, setShowMap] = useState(false);
   const rootStore = useContext(RootStoreContext);
   const {
-    createHubConnection,
-    stopHubConnection,
     sendLike,
     totalLikes,
+    userLiked,
     activity
   } = rootStore.activityStore;
-
-  useEffect(() => {
-    createHubConnection();
-    return () => {
-      stopHubConnection();
-    };
-  }, [createHubConnection, stopHubConnection]);
 
   return (
     <Segment.Group>
@@ -31,14 +23,24 @@ const ActivityDetailedInfo = () => {
           <Grid.Column width={1}>
             <Icon size="large" color="teal" name="info" />
           </Grid.Column>
-          <Grid.Column width={13}>
+          <Grid.Column width={12}>
             <p>{activity!.description}</p>
           </Grid.Column>
-          <Grid.Column width={1}>
-            <Icon size="large" color="teal" name="thumbs up" />
-          </Grid.Column>
-          <Grid.Column width={1}>
-            <p>{totalLikes}</p>
+          <Grid.Column width={3}>
+          <FinalForm
+            onSubmit={sendLike}
+            render={({ handleSubmit, submitting, form }) => (
+              <Form onSubmit={() => handleSubmit()!.then(() => form.reset())}>
+                <Button
+                  loading={submitting}
+                  content={totalLikes}
+                  labelPosition="left"
+                  icon={userLiked ? "thumbs up" : "thumbs up outline"}
+                  color="teal"
+                />
+              </Form>
+            )}
+          />
           </Grid.Column>
         </Grid>
       </Segment>
@@ -72,12 +74,12 @@ const ActivityDetailedInfo = () => {
           <Grid.Column width={1}>
             <Icon name="marker" size="large" color="teal" />
           </Grid.Column>
-          <Grid.Column width={11}>
+          <Grid.Column width={12}>
             <span>
               {activity!.venue}, {activity!.city}
             </span>
           </Grid.Column>
-          <Grid.Column width={4}>
+          <Grid.Column width={3}>
             <Button
               onClick={() => setShowMap(!showMap)}
               color="teal"

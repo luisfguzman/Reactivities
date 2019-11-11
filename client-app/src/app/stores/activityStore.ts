@@ -52,6 +52,12 @@ export default class ActivityStore {
     return this.activity!.likes.length;
   }
 
+  @computed get userLiked() {
+    return this.activity!.likes.filter(
+      a => a.userName === this.rootStore.userStore.user!.username
+    ).length > 0;
+  }
+
   @computed get activitiesByDate() {
     return this.groupActivitiesByDate(
       Array.from(this.activityRegistry.values())
@@ -118,6 +124,7 @@ export default class ActivityStore {
   };
 
   @action addComment = async (values: any) => {
+    console.log('entered to addComment');
     values.activityId = this.activity!.id;
     try {
       await this.hubConnection!.invoke("SendComment", values);
@@ -127,6 +134,7 @@ export default class ActivityStore {
   };
 
   @action sendLike = async (values: any) => {
+    console.log('entered to sendLike');
     values.activityId = this.activity!.id;
     try {
       await this.hubConnection!.invoke("SendLike", values);

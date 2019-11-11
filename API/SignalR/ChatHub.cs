@@ -18,9 +18,9 @@ namespace API.SignalR
 
         public async Task SendComment(Create.Command command)
         {
-            var username = Context.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userName = Context.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            command.UserName = username;
+            command.UserName = userName;
 
             var comment = await _mediator.Send(command);
 
@@ -29,9 +29,9 @@ namespace API.SignalR
 
         public async Task SendLike(Process.Command command)
         {
-            var username = Context.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userName = Context.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            command.UserName = username;
+            command.UserName = userName;
 
             var like = await _mediator.Send(command);
 

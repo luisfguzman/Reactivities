@@ -39,25 +39,25 @@ namespace Application.Likes
 
                 var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == request.UserName);
 
-                var userLike = activity.Likes.FirstOrDefault(x => x.Author.UserName == request.UserName);
+                var like = await _context.Likes.FirstOrDefaultAsync(x => x.Activity.Id == activity.Id && x.Author.Id == user.Id);
 
-                if (userLike == null)
+                if (like == null)
                 {
-                    userLike = new Like
+                    like = new Like
                     {
                         Author = user,
                         Activity = activity,
                         Status = "Liked"
                     };
-                    activity.Likes.Add(userLike);
+                    _context.Likes.Add(like);
                 } else {
-                    userLike.Status = "Unliked";
-                    activity.Likes.Remove(userLike);
+                    like.Status = "Unliked";
+                    _context.Likes.Remove(like);
                 }
 
                 var success = await _context.SaveChangesAsync() > 0;
 
-                if (success) return _mapper.Map<LikeDto>(userLike);
+                if (success) return _mapper.Map<LikeDto>(like);
 
                 throw new Exception("Problem saving changes");
             }
