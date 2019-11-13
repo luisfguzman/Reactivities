@@ -23,6 +23,7 @@ export interface IActivity {
 
 export interface IComment {
   id: string;
+  activityId: string;
   createdAt: Date;
   body: string;
   userName: string;
@@ -32,6 +33,7 @@ export interface IComment {
 
 export interface ILike {
   id: string;
+  activityId: string;
   status: string;
   userName: string;
   displayName: string;

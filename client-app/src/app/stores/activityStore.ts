@@ -53,9 +53,11 @@ export default class ActivityStore {
   }
 
   @computed get userLiked() {
-    return this.activity!.likes.filter(
-      a => a.userName === this.rootStore.userStore.user!.username
-    ).length > 0;
+    return (
+      this.activity!.likes.filter(
+        a => a.userName === this.rootStore.userStore.user!.username
+      ).length > 0
+    );
   }
 
   @computed get activitiesByDate() {
@@ -103,19 +105,23 @@ export default class ActivityStore {
         console.log("Error establishing connection to ChatHub: ", error)
       );
     this.hubConnection.on("ReceiveComment", comment => {
-      runInAction(() => {
-        this.activity!.comments.push(comment);
-      });
+      if (comment.activityId === this.activity!.id) {
+        runInAction(() => {
+          this.activity!.comments.push(comment);
+        });
+      }
     });
     this.hubConnection.on("ReceiveLike", like => {
-      runInAction(() => {
-        if (like.status === "Liked") this.activity!.likes.push(like);
-        else {
-          this.activity!.likes = this.activity!.likes.filter(
-            a => a.id !== like.id
-          );
-        }
-      });
+      if (like.activityId === this.activity!.id) {
+        runInAction(() => {
+          if (like.status === "Liked") this.activity!.likes.push(like);
+          else {
+            this.activity!.likes = this.activity!.likes.filter(
+              a => a.id !== like.id
+            );
+          }
+        });
+      }
     });
   };
 
@@ -124,7 +130,7 @@ export default class ActivityStore {
   };
 
   @action addComment = async (values: any) => {
-    console.log('entered to addComment');
+    console.log("entered to addComment");
     values.activityId = this.activity!.id;
     try {
       await this.hubConnection!.invoke("SendComment", values);
@@ -134,7 +140,7 @@ export default class ActivityStore {
   };
 
   @action sendLike = async (values: any) => {
-    console.log('entered to sendLike');
+    console.log("entered to sendLike");
     values.activityId = this.activity!.id;
     try {
       await this.hubConnection!.invoke("SendLike", values);
@@ -195,7 +201,7 @@ export default class ActivityStore {
       attendees.push(attendee);
       activity.attendees = attendees;
       activity.comments = [];
-      activity.likes =[];
+      activity.likes = [];
       activity.isHost = true;
       runInAction("create activity", () => {
         this.activityRegistry.set(activity.id, activity);
