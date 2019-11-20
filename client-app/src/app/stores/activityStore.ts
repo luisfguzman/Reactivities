@@ -91,46 +91,50 @@ export default class ActivityStore {
     this.page = page;
   };
 
-  @action createHubConnection = () => {
+  @action createHubConnection = (activityId: string) => {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(process.env.REACT_APP_API_CHAT_URL!, {
         accessTokenFactory: () => this.rootStore.commonStore.token!
       })
-      .configureLogging(LogLevel.Information)
+      .configureLogging(LogLevel.Error)
       .build();
     this.hubConnection
       .start()
-      .then(() => console.log(this.hubConnection!.state))
+      .then(() => {
+        this.hubConnection!.invoke("AddToGroup", activityId);
+      })
       .catch(error =>
         console.log("Error establishing connection to ChatHub: ", error)
       );
     this.hubConnection.on("ReceiveComment", comment => {
-      if (comment.activityId === this.activity!.id) {
-        runInAction(() => {
-          this.activity!.comments.push(comment);
-        });
-      }
+      runInAction(() => {
+        this.activity!.comments.push(comment);
+      });
     });
     this.hubConnection.on("ReceiveLike", like => {
-      if (like.activityId === this.activity!.id) {
-        runInAction(() => {
-          if (like.status === "Liked") this.activity!.likes.push(like);
-          else {
-            this.activity!.likes = this.activity!.likes.filter(
-              a => a.id !== like.id
-            );
-          }
-        });
-      }
+      runInAction(() => {
+        if (like.status === "Liked") this.activity!.likes.push(like);
+        else {
+          this.activity!.likes = this.activity!.likes.filter(
+            a => a.id !== like.id
+          );
+        }
+      });
+    });
+    this.hubConnection.on("Send", message => {
+      toast.info(message);
     });
   };
 
   @action stopHubConnection = () => {
-    this.hubConnection!.stop();
+    this.hubConnection!.invoke("RemoveFromGroup", this.activity!.id)
+      .then(() => {
+        this.hubConnection!.stop();
+      })
+      .catch(err => console.log(err));
   };
 
   @action addComment = async (values: any) => {
-    console.log("entered to addComment");
     values.activityId = this.activity!.id;
     try {
       await this.hubConnection!.invoke("SendComment", values);
@@ -154,16 +158,13 @@ export default class ActivityStore {
       (a, b) => a.date.getTime() - b.date!.getTime()
     );
     return Object.entries(
-      sortedActivities.reduce(
-        (activities, activity) => {
-          const date = activity.date.toISOString().split("T")[0];
-          activities[date] = activities[date]
-            ? [...activities[date], activity]
-            : [activity];
-          return activities;
-        },
-        {} as { [key: string]: IActivity[] }
-      )
+      sortedActivities.reduce((activities, activity) => {
+        const date = activity.date.toISOString().split("T")[0];
+        activities[date] = activities[date]
+          ? [...activities[date], activity]
+          : [activity];
+        return activities;
+      }, {} as { [key: string]: IActivity[] })
     );
   }
 
