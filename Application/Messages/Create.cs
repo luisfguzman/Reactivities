@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Errors;
+using Application.Interfaces;
 using AutoMapper;
 using Domain;
 using FluentValidation;
@@ -35,14 +36,19 @@ namespace Application.Messages
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
-            public Handler(DataContext context, IMapper mapper)
+            private readonly IUserAccessor _userAccessor;
+            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _mapper = mapper;
                 _context = context;
             }
 
             public async Task<MessageDto> Handle(Command request, CancellationToken cancellationToken)
             {
+                if (request.SenderUserName != _userAccessor.GetCurrentUsername())
+                    throw new RestException(HttpStatusCode.Unauthorized, new { User = "Not authorized to send messages" });
+
                 var sender = await _context.Users.SingleOrDefaultAsync(x => x.UserName == request.SenderUserName);
 
                 if (sender == null)
