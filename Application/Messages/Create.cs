@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Errors;
 using AutoMapper;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -18,6 +19,16 @@ namespace Application.Messages
             public string SenderUserName { get; set; }
             public string RecipientUserName { get; set; }
             public string Content { get; set; }
+        }
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.SenderUserName).NotEmpty();
+                RuleFor(x => x.RecipientUserName).NotEmpty();
+                RuleFor(x => x.Content).NotEmpty();
+            }
         }
 
         public class Handler : IRequestHandler<Command, MessageDto>
@@ -40,7 +51,7 @@ namespace Application.Messages
                 var recipient = await _context.Users.SingleOrDefaultAsync(x => x.UserName == request.RecipientUserName);
 
                 if (recipient == null)
-                    throw new RestException(HttpStatusCode.NotFound, new { User = "Recipient not found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { User = "Recipient User not found" });
 
                 var message = new Message
                 {
