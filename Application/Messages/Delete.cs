@@ -9,7 +9,7 @@ using Persistence;
 
 namespace Application.Messages
 {
-    public class Read
+    public class Delete
     {
         public class Command : IRequest
         {
@@ -39,15 +39,21 @@ namespace Application.Messages
 
                 if (message.RecipientId != user.Id)
                     throw new RestException(HttpStatusCode.Unauthorized, new { User = "Not authorized to read this message" });
-                
-                message.IsRead = true;
-                message.DateRead = DateTime.Now;
+
+                if (message.SenderId == user.Id)
+                    message.SenderDeleted = true;
+
+                if (message.RecipientId == user.Id)
+                    message.RecipientDeleted = true;
+
+                if (message.SenderDeleted && message.RecipientDeleted)
+                    _context.Messages.Remove(message);
 
                 var success = await _context.SaveChangesAsync() > 0;
 
                 if (success) return Unit.Value;
 
-                throw new Exception("Problem saving changes.");
+                throw new Exception("Error deleting the message");
             }
         }
     }
