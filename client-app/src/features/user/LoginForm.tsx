@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Form as FinalForm, Field } from "react-final-form";
-import { Form, Button, Header } from "semantic-ui-react";
+import { Form, Button, Header, Divider } from "semantic-ui-react";
 import TextInput from "../../app/common/form/TextInput";
 import { RootStoreContext } from "../../app/stores/rootStore";
 import { IUserFormValues } from "../../app/models/user";
@@ -12,6 +12,7 @@ import {
   createValidator
 } from "revalidate";
 import ErrorMessage from "../../app/common/form/ErrorMessage";
+import SocialFBLogin from "./SocialFBLogin";
 
 const isValidEmail = createValidator(
   message => value => {
@@ -29,7 +30,7 @@ const validate = combineValidators({
 
 const LoginForm = () => {
   const rootStore = useContext(RootStoreContext);
-  const { login } = rootStore.userStore;
+  const { login, fbLogin, loading } = rootStore.userStore;
   return (
     <FinalForm
       validate={validate}
@@ -73,6 +74,8 @@ const LoginForm = () => {
             content="Login"
             fluid
           />
+          <Divider horizontal>Or</Divider>
+          <SocialFBLogin fbCallback={fbLogin} loading={loading} />
         </Form>
       )}
     />
