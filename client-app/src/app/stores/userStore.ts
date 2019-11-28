@@ -64,6 +64,7 @@ export default class UserStore {
   };
 
   @action fbLogin = async (response: any) => {
+    console.log(response);
     this.loading = true;
     try {
       const user = await agent.User.fbLogin(response.accessToken);
@@ -75,7 +76,29 @@ export default class UserStore {
       })
       history.push('/activities');
     } catch (error) {
-      this.loading = false;
+      runInAction("Facebook login error", () => {
+        this.loading = false;
+      });
+      throw error;
+    }
+  }
+
+  @action googleLogin = async (response: any) => {
+    var id_token = response.getAuthResponse().id_token;
+    this.loading = true;
+    try {
+      const user = await agent.User.googleLogin(id_token);
+      runInAction(() => {
+        this.user = user;
+        this.rootStore.commonStore.setToken(user.token);
+        this.rootStore.modalStore.closeModal();
+        this.loading = false;
+      })
+      history.push('/activities');
+    } catch (error) {
+      runInAction("Google login error", () => {
+        this.loading = false;
+      });
       throw error;
     }
   }

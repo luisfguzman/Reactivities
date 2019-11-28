@@ -83,7 +83,9 @@ const User = {
   register: (user: IUserFormValues): Promise<IUser> =>
     requests.post(`/user/register`, user),
   fbLogin: (accessToken: string): Promise<IUser> =>
-    requests.post(`/user/facebook`, {accessToken})
+    requests.post(`/user/facebook`, {accessToken}),
+  googleLogin: (idToken: string): Promise<IUser> =>
+    requests.post(`/user/google`, {idToken})
 };
 
 const Profiles = {

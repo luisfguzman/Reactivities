@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -10,16 +11,32 @@ namespace Infrastructure.Security
 {
     public class SocialAccessor : ISocialAccessor
     {
-        private readonly HttpClient _httpClient;
-        private readonly IOptions<FacebookAppSettings> _config;
-        public SocialAccessor(IOptions<FacebookAppSettings> config)
+        private class GoogleValidate {
+            public string iss { get; set; }
+            public string aud { get; set; }
+            public long exp { get; set; }
+        }
+        private readonly HttpClient _httpFacebookClient;
+        private readonly HttpClient _httpGoogleClient;
+        private readonly IOptions<FacebookAppSettings> _fbconfig;
+        private readonly IOptions<GoogleAppSettings> _googleConfig;
+        public SocialAccessor(IOptions<FacebookAppSettings> fbConfig, IOptions<GoogleAppSettings> googleConfig)
         {
-            _config = config;
-            _httpClient = new HttpClient
+            _googleConfig = googleConfig;
+            _fbconfig = fbConfig;
+            _httpFacebookClient = new HttpClient
             {
                 BaseAddress = new System.Uri("https://graph.facebook.com/")
             };
-            _httpClient.DefaultRequestHeaders
+            _httpFacebookClient.DefaultRequestHeaders
+                .Accept
+                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            _httpGoogleClient = new HttpClient
+            {
+                BaseAddress = new System.Uri("https://oauth2.googleapis.com/")
+            };
+            _httpGoogleClient.DefaultRequestHeaders
                 .Accept
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
@@ -27,7 +44,7 @@ namespace Infrastructure.Security
         public async Task<FacebookUserInfo> FacebookLogin(string accessToken)
         {
             // verify token is valid
-            var verifyToken = await _httpClient.GetAsync($"debug_token?input_token={accessToken}&access_token={_config.Value.AppId}|{_config.Value.AppSecret}");
+            var verifyToken = await _httpFacebookClient.GetAsync($"debug_token?input_token={accessToken}&access_token={_fbconfig.Value.AppId}|{_fbconfig.Value.AppSecret}");
 
             if (!verifyToken.IsSuccessStatusCode)
                 return null;
@@ -37,9 +54,28 @@ namespace Infrastructure.Security
             return result;
         }
 
+        public async Task<GoogleUserInfo> GoogleLogin(string idToken)
+        {
+            var response = await _httpGoogleClient.GetAsync($"tokeninfo?id_token={idToken}");
+
+            if(!response.IsSuccessStatusCode)
+                return null;
+            
+            var result = await response.Content.ReadAsStringAsync();
+
+            var validationData = JsonConvert.DeserializeObject<GoogleValidate>(result);
+            var expiryDate = new DateTime(validationData.exp);
+            var compareResult = DateTime.Compare(expiryDate,  DateTime.Now);
+
+            if(validationData.aud != _googleConfig.Value.ClientId || validationData.iss != "accounts.google.com" || compareResult > 0)
+                return null;
+
+            return JsonConvert.DeserializeObject<GoogleUserInfo>(result);
+        }
+
         private async Task<T> GetAsync<T>(string accessToken, string endpoint, string args)
         {
-            var response = await _httpClient.GetAsync($"{endpoint}?access_token={accessToken}&{args}");
+            var response = await _httpFacebookClient.GetAsync($"{endpoint}?access_token={accessToken}&{args}");
 
             if (!response.IsSuccessStatusCode)
                 return default(T);

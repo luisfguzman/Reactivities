@@ -13,6 +13,7 @@ import {
 } from "revalidate";
 import ErrorMessage from "../../app/common/form/ErrorMessage";
 import SocialFBLogin from "./SocialFBLogin";
+import SocialGoogleLogin from "./SocialGoogleLogin";
 
 const isValidEmail = createValidator(
   message => value => {
@@ -30,7 +31,7 @@ const validate = combineValidators({
 
 const LoginForm = () => {
   const rootStore = useContext(RootStoreContext);
-  const { login, fbLogin, loading } = rootStore.userStore;
+  const { login, fbLogin, googleLogin, loading } = rootStore.userStore;
   return (
     <FinalForm
       validate={validate}
@@ -76,6 +77,8 @@ const LoginForm = () => {
           />
           <Divider horizontal>Or</Divider>
           <SocialFBLogin fbCallback={fbLogin} loading={loading} />
+          <Divider horizontal />
+          <SocialGoogleLogin googleCallback={googleLogin} loading={loading} />
         </Form>
       )}
     />

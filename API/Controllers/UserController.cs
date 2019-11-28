@@ -29,7 +29,14 @@ namespace API.Controllers
         
         [AllowAnonymous]
         [HttpPost("facebook")]
-        public async Task<ActionResult<User>> FacebookLogin(ExternalLogin.Query query)
+        public async Task<ActionResult<User>> FacebookLogin(ExternalFacebookLogin.Query query)
+        {
+            return await Mediator.Send(query);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("google")]
+        public async Task<ActionResult<User>> GoogleLogin(ExternalGoogleLogin.Query query)
         {
             return await Mediator.Send(query);
         }

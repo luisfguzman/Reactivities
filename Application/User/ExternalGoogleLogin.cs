@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.User
 {
-    public class ExternalLogin
+    public class ExternalGoogleLogin
     {
         public class Query : IRequest<User>
         {
-            public string AccessToken { get; set; }
+            public string IdToken { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, User>
@@ -31,7 +31,7 @@ namespace Application.User
 
             public async Task<User> Handle(Query request, CancellationToken cancellationToken)
             {
-                var userInfo = await _socialAccessor.FacebookLogin(request.AccessToken);
+                var userInfo = await _socialAccessor.GoogleLogin(request.IdToken);
 
                 if (userInfo == null)
                     throw new RestException(HttpStatusCode.BadRequest, new {User = "Problem validating token"});
@@ -43,15 +43,15 @@ namespace Application.User
                     user = new AppUser
                     {
                         DisplayName = userInfo.Name,
-                        Id = userInfo.Id,
+                        Id = userInfo.Sub,
                         Email = userInfo.Email,
-                        UserName = "fb_" + userInfo.Id
+                        UserName = "google_" + userInfo.Sub
                     };
 
                     var photo = new Photo
                     {
-                        Id = "fb_" + userInfo.Id,
-                        Url = userInfo.Picture.Data.Url,
+                        Id = "google_" + userInfo.Sub,
+                        Url = userInfo.Picture,
                         IsMain = true
                     };
 

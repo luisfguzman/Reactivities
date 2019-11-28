@@ -133,6 +133,7 @@ namespace API
             services.AddScoped<ISocialAccessor, SocialAccessor>();
             services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
             services.Configure<FacebookAppSettings>(Configuration.GetSection("Authentication:Facebook"));
+            services.Configure<GoogleAppSettings>(Configuration.GetSection("Authentication:Google"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
