@@ -19,6 +19,7 @@ import LoadingComponent from "./LoadingComponent";
 import ModalContainer from "../common/modals/ModalContainer";
 import ProfilePage from "../../features/profiles/ProfilePage";
 import PrivateRoute from "./PrivateRoute";
+import { MessageDashboard } from "../../features/messages/dashboard/MessageDashboard";
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);
@@ -49,6 +50,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
               <Switch>
                 <PrivateRoute exact path="/activities" component={ActivityDashboard} />
                 <PrivateRoute path="/activities/:id" component={ActivityDetails} />
+                <PrivateRoute exact path="/messages" component={MessageDashboard} />
                 <PrivateRoute
                   key={location.key}
                   path={["/createActivity", "/manage/:id"]}

@@ -20,6 +20,7 @@ const NavBar: React.FC = () => {
             Intermingle.Club
           </Menu.Item>
           <Menu.Item name="Activities" as={NavLink} to="/activities" />
+          <Menu.Item name="Messages" as={NavLink} to="/messages" />
           <Menu.Item>
             <Button
               as={NavLink}
@@ -42,6 +43,12 @@ const NavBar: React.FC = () => {
                     to={`/profile/${user.username}`}
                     text="My profile"
                     icon="user"
+                  />
+                  <Dropdown.Item
+                    as={Link}
+                    to={'/messages'}
+                    text="My messages"
+                    icon="envelope"
                   />
                   <Dropdown.Item onClick={logout} text="Logout" icon="power" />
                 </Dropdown.Menu>
